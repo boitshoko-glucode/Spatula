@@ -36,7 +36,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/filled_text_field"
-        tools:listitem="@layout/list_item" />
+        tools:listitem="@layout/search_list_item" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
