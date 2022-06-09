@@ -24,6 +24,7 @@ class FavoritesAdapter(
         holder.bind(recipes[position], onClick)
     }
 
+
     override fun getItemCount(): Int = recipes.count()
 
 
