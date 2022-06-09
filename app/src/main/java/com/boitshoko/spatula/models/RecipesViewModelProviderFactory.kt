@@ -7,7 +7,7 @@ import com.boitshoko.spatula.repo.RecipesRepo
 
 class RecipesViewModelProviderFactory(
     val app: Application,
-    val recipesRepo: RecipesRepo
+    private val recipesRepo: RecipesRepo
     ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

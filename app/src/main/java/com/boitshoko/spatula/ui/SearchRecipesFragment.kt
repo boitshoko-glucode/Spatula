@@ -30,7 +30,7 @@ class SearchRecipesFragment : Fragment() {
 
     lateinit var viewModel: RecipesViewModel
 
-    private lateinit var recipesList: List<Result>
+    private  var recipesList: MutableList<Result>? = null
 
     private lateinit var adapter: SearchAdapter
     private lateinit var rvSearchResults: RecyclerView
@@ -57,6 +57,7 @@ class SearchRecipesFragment : Fragment() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
+                    if (recipesList?.isNotEmpty() == true) recipesList!!.clear()
                     viewModel.searchRecipes(binding.etSearch.text.toString())
                     true
                 }
@@ -72,9 +73,11 @@ class SearchRecipesFragment : Fragment() {
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()
+                    showList()
                     response.data.let { recipesResponse ->
                         if (recipesResponse != null) {
-                            setUpRecipesList(recipesResponse.results)
+                            recipesList = recipesResponse.results.toList() as MutableList<Result>
+                            setUpRecipesList(recipesList!!)
                         }
 
                     }
@@ -83,6 +86,7 @@ class SearchRecipesFragment : Fragment() {
 
                 is Resource.Error -> {
                     hideProgressBar()
+                    showList()
                     response.message.let { message ->
                         Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
                             .show()
@@ -90,6 +94,7 @@ class SearchRecipesFragment : Fragment() {
                 }
 
                 is Resource.Loading -> {
+                    hideList()
                     showProgressBar()
                 }
             }
@@ -107,6 +112,16 @@ class SearchRecipesFragment : Fragment() {
        // isLoading = true
     }
 
+    private fun hideList() {
+        binding.rvSearchResults.visibility = View.INVISIBLE
+        //isLoading = false
+    }
+
+    private fun showList() {
+        binding.rvSearchResults.visibility = View.VISIBLE
+        // isLoading = true
+    }
+
 
     private fun setUpRecipesList(recipes: List<Result>) {
         adapter = SearchAdapter(recipes) {
@@ -116,14 +131,16 @@ class SearchRecipesFragment : Fragment() {
         rvSearchResults.adapter = adapter
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        binding.rvSearchResults.addItemDecoration(dividerItemDecoration)
+        rvSearchResults.addItemDecoration(dividerItemDecoration)
     }
+
+
 
     private fun goToRecipe(recipe: Result) {
         val bundle = Bundle().apply {
-
+            putSerializable("recipe", recipe)
         }
-        Log.d(TAG, "goToAbout: $recipe")
-        findNavController().navigate(R.id.action_actionSearch_to_recipeDetailsFragment)
+        Log.d(TAG, "goToRecipe: $recipe")
+        findNavController().navigate(R.id.action_actionSearch_to_recipeDetailsFragment, bundle)
     }
 }

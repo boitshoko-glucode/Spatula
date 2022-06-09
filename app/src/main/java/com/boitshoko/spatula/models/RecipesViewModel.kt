@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.boitshoko.spatula.MainApplication
 import com.boitshoko.spatula.models.search.RecipesResponse
+import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.repo.RecipesRepo
 import com.boitshoko.spatula.utils.Resource
 import kotlinx.coroutines.launch
@@ -32,6 +33,7 @@ class RecipesViewModel(
 
     private suspend fun safeSearchRecipesCall(searchQuery: String) {
         Log.d(TAG, "safeSearchRecipesCall: searchQuery: $searchQuery")
+        searchRecipesResponse = null
         _searchRecipes.postValue(Resource.Loading())
         try {
             if (hasInternetConnection()) {
@@ -66,6 +68,17 @@ class RecipesViewModel(
 
 
         return Resource.Error(response.message())
+    }
+
+
+    fun saveRecipe(recipe: Result) = viewModelScope.launch {
+        recipesRepo.insertRecipe(recipe)
+    }
+
+    fun getSavedRecipes() = recipesRepo.getSavedRecipes()
+
+    fun deleteRecipe(recipe: Result) = viewModelScope.launch {
+        recipesRepo.deleteRecipe(recipe)
     }
 
 
