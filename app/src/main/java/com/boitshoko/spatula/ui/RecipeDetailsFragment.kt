@@ -1,6 +1,7 @@
 package com.boitshoko.spatula.ui
 
 import android.animation.LayoutTransition
+import android.content.Context
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
@@ -9,9 +10,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.RecyclerView
 import com.boitshoko.spatula.MainActivity
+import com.boitshoko.spatula.R
+import com.boitshoko.spatula.adapters.RecipeStepsAdapter
+import com.boitshoko.spatula.adapters.SearchAdapter
 import com.boitshoko.spatula.databinding.FragmentRecipeDetailsBinding
 import com.boitshoko.spatula.models.RecipesViewModel
 import com.boitshoko.spatula.models.details.Equipment
@@ -36,12 +43,16 @@ class RecipeDetailsFragment : Fragment() {
     private lateinit var ingredientsList: MutableList<Ingredient>
     private lateinit var equipmentList: MutableList<Equipment>
 
+    private lateinit var recipeStepsAdapter: RecipeStepsAdapter
+    private lateinit var rvRecipeSteps: RecyclerView
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false)
+        //rvRecipeSteps = binding.recipeLayout.recipeDetailsText
         return binding.root
     }
 
@@ -55,7 +66,7 @@ class RecipeDetailsFragment : Fragment() {
         ingredientsList = mutableListOf()
         equipmentList = mutableListOf()
         Log.d(TAG, "onViewCreated: $resultRecipe")
-       // viewModel.getRecipeInstructions(resultRecipe.id)
+        viewModel.getRecipeInstructions(resultRecipe.id)
 
         binding.fab.setOnClickListener {
             viewModel.saveRecipe(resultRecipe)
@@ -109,6 +120,19 @@ class RecipeDetailsFragment : Fragment() {
 
     private fun getInstructionSteps(recipeItem: RecipeInstructionsResponseItem) {
         for (step in recipeItem.steps) stepList.add(step.step)
+        //setUpRecipeSteps()
+
+        binding.recipeLayout.recipeDetailsText.text = stepListToText()
+    }
+
+    private fun stepListToText() : String {
+        var stepsStr = ""
+        for (i in stepList.indices) {
+            stepsStr += "$i ${stepList[i]}\n"
+        }
+
+
+        return stepsStr
     }
 
     private fun getIngredients(recipeItem: RecipeInstructionsResponseItem) {
@@ -121,6 +145,14 @@ class RecipeDetailsFragment : Fragment() {
         for (step in recipeItem.steps) {
             for (eq in step.equipment) equipmentList.add(eq)
         }
+    }
+
+    fun setUpRecipeSteps() {
+        recipeStepsAdapter = RecipeStepsAdapter(stepList)
+        rvRecipeSteps.adapter = recipeStepsAdapter
+        val dividerItemDecoration =
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        rvRecipeSteps.addItemDecoration(dividerItemDecoration)
     }
 
     private fun showView() {

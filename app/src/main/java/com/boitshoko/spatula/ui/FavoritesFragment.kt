@@ -84,4 +84,6 @@ class FavoritesFragment : Fragment() {
         Log.d(TAG, "goToRecipe: $recipe")
         findNavController().navigate(R.id.action_actionFavorites_to_recipeDetailsFragment, bundle)
     }
+
+
 }

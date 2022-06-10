@@ -39,6 +39,13 @@
                 android:text="@string/lorem"
                 android:textSize="12sp" />
 
+            <!--<androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recipe_details_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                tools:listitem="@layout/recipe_list_item"/>-->
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
     </androidx.cardview.widget.CardView>
