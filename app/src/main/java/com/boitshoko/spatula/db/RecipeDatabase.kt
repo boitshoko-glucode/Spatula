@@ -14,7 +14,7 @@ import com.boitshoko.spatula.models.search.Result
 @TypeConverters(Converters::class)
 abstract class RecipeDatabase: RoomDatabase() {
 
-    abstract fun getRecipeDao(): RecipeDao
+    abstract fun getRecipeDao(): FavouriteRecipesDao
     
     companion object {
         @Volatile

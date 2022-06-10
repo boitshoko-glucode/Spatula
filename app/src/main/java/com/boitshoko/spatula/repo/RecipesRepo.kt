@@ -13,9 +13,9 @@ class RecipesRepo(
     suspend fun getRecipeInstructions(id: Int) =
         RetrofitInstance.api.getRecipeInstructions(id =  id)
 
-    suspend fun insertRecipe(recipe: Result) = db.getRecipeDao().insertRecipe(recipe)
+    suspend fun insertRecipe(recipe: Result) = db.getRecipeDao().insertFavourite(recipe)
 
-    fun getSavedRecipes() = db.getRecipeDao().getAllRecipes()
+    fun getSavedRecipes() = db.getRecipeDao().getAllFavourites()
 
     suspend fun deleteRecipe(recipe: Result) = db.getRecipeDao().deleteRecipe(recipe)
 

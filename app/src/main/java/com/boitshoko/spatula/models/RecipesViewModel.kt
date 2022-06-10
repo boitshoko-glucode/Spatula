@@ -9,7 +9,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.boitshoko.spatula.MainApplication
 import com.boitshoko.spatula.models.details.RecipeInstructionsResponse
-import com.boitshoko.spatula.models.search.RecipesResponse
+import com.boitshoko.spatula.api.models.RecipesResponse
 import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.repo.RecipesRepo
 import com.boitshoko.spatula.utils.Resource
@@ -80,7 +80,6 @@ class RecipesViewModel(
     }
 
     private fun handleRecipeInstructionsResponse(response: Response<RecipeInstructionsResponse>) : Resource<RecipeInstructionsResponse>{
-
         Log.d(TAG, "safeGetRecipesCall: response: $response")
 
         if (response.isSuccessful){

@@ -2,7 +2,7 @@ package com.boitshoko.spatula.api
 
 
 import com.boitshoko.spatula.models.details.RecipeInstructionsResponse
-import com.boitshoko.spatula.models.search.RecipesResponse
+import com.boitshoko.spatula.api.models.RecipesResponse
 import com.boitshoko.spatula.utils.Constants.Companion.API_KEY
 import retrofit2.Response
 import retrofit2.http.GET
