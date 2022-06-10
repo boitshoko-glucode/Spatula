@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
@@ -69,7 +70,7 @@ class SearchRecipesFragment : Fragment() {
     }
 
     private fun setUpObserver(){
-        viewModel._searchRecipes.observe(viewLifecycleOwner) { response ->
+        viewModel.searchRecipes.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     hideProgressBar()

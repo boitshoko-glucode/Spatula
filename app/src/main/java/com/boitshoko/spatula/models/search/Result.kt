@@ -12,6 +12,6 @@ data class Result (
 	@PrimaryKey val id : Int,
 	val title : String,
 	val image : String,
-	val imageType : String,
+	val imageType : String
 	//val nutrition : Nutrition
 ): Serializable

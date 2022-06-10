@@ -43,7 +43,7 @@
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
-        android:text="test"
+        tools:text="test"
         android:textAppearance="?attr/textAppearanceTitleLarge"
         android:textColor="@color/black"
         android:textSize="18sp"

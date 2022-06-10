@@ -10,6 +10,9 @@ class RecipesRepo(
     suspend fun searchRecipes(searchQuery: String) =
         RetrofitInstance.api.searchRecipes(searchQuery =  searchQuery)
 
+    suspend fun getRecipeInstructions(id: Int) =
+        RetrofitInstance.api.getRecipeInstructions(id =  id)
+
     suspend fun insertRecipe(recipe: Result) = db.getRecipeDao().insertRecipe(recipe)
 
     fun getSavedRecipes() = db.getRecipeDao().getAllRecipes()
