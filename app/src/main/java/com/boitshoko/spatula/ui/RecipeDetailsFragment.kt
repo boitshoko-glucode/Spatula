@@ -26,6 +26,7 @@ import com.boitshoko.spatula.models.details.Ingredient
 import com.boitshoko.spatula.models.details.RecipeInstructionsResponseItem
 import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.utils.Resource
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 
 
@@ -68,13 +69,20 @@ class RecipeDetailsFragment : Fragment() {
         Log.d(TAG, "onViewCreated: $resultRecipe")
         viewModel.getRecipeInstructions(resultRecipe.id)
 
+        binding.recipeTitle.text = resultRecipe.title
+
+        val media = resultRecipe.image
+        Glide.with(this)
+            .load(media)
+            .into(binding.media)
+
         binding.fab.setOnClickListener {
             viewModel.saveRecipe(resultRecipe)
             Snackbar.make(view, "Recipe saved", Snackbar.LENGTH_SHORT).show()
         }
 
-        binding.recipeLayout.recipeCard.setOnClickListener {
-            expand(binding.recipeLayout.recipeDetailsText, binding.recipeLayout.recipeLinearLayout)
+        binding.recipeCard.setOnClickListener {
+            expand(binding.recipeDetailsText, binding.recipeView)
         }
 
         setUpObserver()
@@ -122,29 +130,49 @@ class RecipeDetailsFragment : Fragment() {
         for (step in recipeItem.steps) stepList.add(step.step)
         //setUpRecipeSteps()
 
-        binding.recipeLayout.recipeDetailsText.text = stepListToText()
+        binding.recipeDetailsText.text = stepListToText()
     }
 
     private fun stepListToText() : String {
         var stepsStr = ""
         for (i in stepList.indices) {
-            stepsStr += "$i ${stepList[i]}\n"
+            stepsStr += "${i+1} ${stepList[i]}\n\n"
         }
 
 
         return stepsStr
     }
 
+    private fun ingredientsListToText() : String {
+        var ingredientsStr = ""
+        for (ingredient in ingredientsList) {
+            ingredientsStr += "${ingredient.name}, "
+        }
+        return ingredientsStr
+    }
+
+    private fun equipmentListToText() : String {
+        var equipmentStr = ""
+        for (equipment in equipmentList) {
+            equipmentStr += "${equipment.name}, "
+        }
+        return equipmentStr
+    }
+
     private fun getIngredients(recipeItem: RecipeInstructionsResponseItem) {
         for (step in recipeItem.steps) {
             for (ing in step.ingredients) ingredientsList.add(ing)
         }
+
+        binding.recipeIngredients.text = getString(R.string.ingredients, ingredientsListToText())
     }
 
     private fun getEquipment(recipeItem: RecipeInstructionsResponseItem) {
         for (step in recipeItem.steps) {
             for (eq in step.equipment) equipmentList.add(eq)
         }
+
+        binding.recipeEquipment.text = getString(R.string.equipment, equipmentListToText())
     }
 
     fun setUpRecipeSteps() {
@@ -155,8 +183,8 @@ class RecipeDetailsFragment : Fragment() {
         rvRecipeSteps.addItemDecoration(dividerItemDecoration)
     }
 
-    private fun showView() {
-        TODO("Not yet implemented")
+    private fun showView(view: View) {
+        view.visibility = View.VISIBLE
     }
 
     private fun showProgressBar() {

@@ -3,8 +3,10 @@
     <string name="search">Search</string>
     <string name="favorites">Favorites</string>
     <string name="home">Home</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
     <string name="todo">todo</string>
+    <string name="ingredients">Ingredients: %s</string>
+    <string name="equipment">Equipment: %s</string>
+    <string name="lets_cook">Let\'s get cooking</string>
 </resources>
