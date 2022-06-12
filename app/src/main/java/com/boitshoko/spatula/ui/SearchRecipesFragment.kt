@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -29,7 +31,7 @@ class SearchRecipesFragment : Fragment() {
 
     // private val viewModel: RecipesViewModel by viewModels()
 
-    lateinit var viewModel: RecipesViewModel
+    private val viewModel: RecipesViewModel by activityViewModels()
 
     private  var recipesList: MutableList<Result>? = null
 

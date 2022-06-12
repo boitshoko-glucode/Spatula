@@ -10,9 +10,16 @@ import androidx.lifecycle.*
 import com.boitshoko.spatula.MainApplication
 import com.boitshoko.spatula.models.details.RecipeInstructionsResponse
 import com.boitshoko.spatula.api.models.RecipesResponse
+import com.boitshoko.spatula.domain.cache.FavouriteRecipesCache
+import com.boitshoko.spatula.domain.cache.FavouriteRecipesCacheImpl
+import com.boitshoko.spatula.domain.models.Recipe
 import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.repo.RecipesRepo
 import com.boitshoko.spatula.utils.Resource
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
