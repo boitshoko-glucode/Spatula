@@ -6,7 +6,9 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.boitshoko.spatula.MainApplication
 import com.boitshoko.spatula.models.details.RecipeInstructionsResponse
 import com.boitshoko.spatula.models.search.RecipesResponse
@@ -124,6 +126,8 @@ class RecipesViewModel(
     }
 
     fun getSavedRecipes() = recipesRepo.getSavedRecipes()
+
+    fun getRandomRecipe() = recipesRepo.getRandomRecipe()
 
     fun deleteRecipe(recipe: Result) = viewModelScope.launch {
         recipesRepo.deleteRecipe(recipe)

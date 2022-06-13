@@ -1,24 +1,21 @@
 package com.boitshoko.spatula.ui
 
 import android.animation.LayoutTransition
-import android.content.Context
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.boitshoko.spatula.MainActivity
 import com.boitshoko.spatula.R
 import com.boitshoko.spatula.adapters.RecipeStepsAdapter
-import com.boitshoko.spatula.adapters.SearchAdapter
 import com.boitshoko.spatula.databinding.FragmentRecipeDetailsBinding
 import com.boitshoko.spatula.models.RecipesViewModel
 import com.boitshoko.spatula.models.details.Equipment
@@ -50,7 +47,7 @@ class RecipeDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentRecipeDetailsBinding.inflate(inflater, container, false)
         //rvRecipeSteps = binding.recipeLayout.recipeDetailsText
@@ -136,11 +133,11 @@ class RecipeDetailsFragment : Fragment() {
     private fun stepListToText() : String {
         var stepsStr = ""
         for (i in stepList.indices) {
-            stepsStr += "${i+1} ${stepList[i]}\n\n"
+            stepsStr += "${i+1}. ${stepList[i]}\n\n"
         }
 
 
-        return stepsStr
+        return stepsStr.dropLast(2)
     }
 
     private fun ingredientsListToText() : String {
@@ -148,7 +145,7 @@ class RecipeDetailsFragment : Fragment() {
         for (ingredient in ingredientsList) {
             ingredientsStr += "${ingredient.name}, "
         }
-        return ingredientsStr
+        return ingredientsStr.dropLast(2)
     }
 
     private fun equipmentListToText() : String {
@@ -156,7 +153,7 @@ class RecipeDetailsFragment : Fragment() {
         for (equipment in equipmentList) {
             equipmentStr += "${equipment.name}, "
         }
-        return equipmentStr
+        return equipmentStr.dropLast(2)
     }
 
     private fun getIngredients(recipeItem: RecipeInstructionsResponseItem) {

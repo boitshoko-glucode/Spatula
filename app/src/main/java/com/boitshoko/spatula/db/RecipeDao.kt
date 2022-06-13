@@ -12,6 +12,9 @@ interface RecipeDao {
     @Query("SELECT * FROM recipes")
     fun getAllRecipes(): LiveData<List<Result>>
 
+    @Query("SELECT * FROM recipes ORDER BY RANDOM() LIMIT 1")
+    fun getRandomRecipe(): LiveData<Result>
+
     @Delete
     suspend fun deleteRecipe(recipe: Result)
 }
