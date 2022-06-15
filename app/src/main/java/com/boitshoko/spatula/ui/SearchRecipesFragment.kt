@@ -2,46 +2,40 @@ package com.boitshoko.spatula.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import android.widget.Toast
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.boitshoko.spatula.MainActivity
 import com.boitshoko.spatula.R
 import com.boitshoko.spatula.adapters.SearchAdapter
 import com.boitshoko.spatula.databinding.FragmentSearchRecipesBinding
-import com.boitshoko.spatula.models.RecipesViewModel
+import com.boitshoko.spatula.extensions.setOnSearchListener
 import com.boitshoko.spatula.models.search.Result
-import com.boitshoko.spatula.utils.Resource
+import com.boitshoko.spatula.ui.viewmodel.SearchResultViewData
+import com.boitshoko.spatula.ui.viewmodel.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchRecipesFragment : Fragment() {
 
     private val TAG = javaClass.simpleName
 
     private lateinit var binding: FragmentSearchRecipesBinding
 
-    // private val viewModel: RecipesViewModel by viewModels()
-
-    private val viewModel: RecipesViewModel by activityViewModels()
+     private val viewModel: SearchViewModel by viewModels()
 
     private  var recipesList: MutableList<Result>? = null
-
-    private lateinit var adapter: SearchAdapter
     private lateinit var rvSearchResults: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentSearchRecipesBinding.inflate(inflater, container, false)
 
@@ -55,54 +49,58 @@ class SearchRecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).viewModel
+        configureList()
 
-        binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
-            return@setOnEditorActionListener when (actionId) {
-                EditorInfo.IME_ACTION_SEARCH -> {
-                    if (recipesList?.isNotEmpty() == true) recipesList!!.clear()
-                    viewModel.searchRecipes(binding.etSearch.text.toString())
-                    true
-                }
-                else -> false
-            }
+        binding.etSearch.setOnSearchListener {
+            if (recipesList?.isNotEmpty() == true) recipesList!!.clear()
+            viewModel.findRecipe(binding.etSearch.text.toString())
         }
 
         setUpObserver()
     }
 
-    private fun setUpObserver(){
-        viewModel.searchRecipes.observe(viewLifecycleOwner) { response ->
-            when (response) {
-                is Resource.Success -> {
-                    hideProgressBar()
-                    showList()
-                    response.data.let { recipesResponse ->
-                        if (recipesResponse != null) {
-                            recipesList = recipesResponse.results.toList() as MutableList<Result>
-                            setUpRecipesList(recipesList!!)
-                        }
-
-                    }
-
-                }
-
-                is Resource.Error -> {
-                    hideProgressBar()
-                    showList()
-                    response.message.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                }
-
-                is Resource.Loading -> {
-                    hideList()
-                    showProgressBar()
-                }
-            }
-
+    private fun configureList() = with(binding.rvSearchResults) {
+        adapter = SearchAdapter {
+            goToRecipe(it)
         }
+        addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
+    }
+
+    private fun setUpObserver() {
+        viewModel.resultsViewData.observe(viewLifecycleOwner) { viewData ->
+            (binding.rvSearchResults.adapter as? SearchAdapter)?.update(viewData)
+        }
+//        viewModel.searchRecipes.observe(viewLifecycleOwner) { response ->
+//            when (response) {
+//                is Resource.Success -> {
+//                    hideProgressBar()
+//                    showList()
+//                    response.data.let { recipesResponse ->
+//                        if (recipesResponse != null) {
+//                            recipesList = recipesResponse.results.toList() as MutableList<Result>
+//                            setUpRecipesList(recipesList!!)
+//                        }
+//
+//                    }
+//
+//                }
+//
+//                is Resource.Error -> {
+//                    hideProgressBar()
+//                    showList()
+//                    response.message.let { message ->
+//                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_LONG)
+//                            .show()
+//                    }
+//                }
+//
+//                is Resource.Loading -> {
+//                    hideList()
+//                    showProgressBar()
+//                }
+//            }
+//
+//        }
     }
 
     private fun hideProgressBar() {
@@ -126,22 +124,10 @@ class SearchRecipesFragment : Fragment() {
     }
 
 
-    private fun setUpRecipesList(recipes: List<Result>) {
-        adapter = SearchAdapter(recipes) {
-            goToRecipe(it)
-        }
 
-        rvSearchResults.adapter = adapter
-        val dividerItemDecoration =
-            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        rvSearchResults.addItemDecoration(dividerItemDecoration)
-    }
-
-
-
-    private fun goToRecipe(recipe: Result) {
+    private fun goToRecipe(recipe: SearchResultViewData) {
         val bundle = Bundle().apply {
-            putSerializable("recipe", recipe)
+//            putSerializable("recipe", recipe)
         }
         Log.d(TAG, "goToRecipe: $recipe")
         findNavController().navigate(R.id.action_actionSearch_to_recipeDetailsFragment, bundle)

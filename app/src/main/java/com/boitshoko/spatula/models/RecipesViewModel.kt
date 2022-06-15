@@ -10,18 +10,12 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.boitshoko.spatula.MainApplication
-import com.boitshoko.spatula.models.details.RecipeInstructionsResponse
 import com.boitshoko.spatula.api.models.RecipesResponse
-import com.boitshoko.spatula.domain.cache.FavouriteRecipesCache
-import com.boitshoko.spatula.domain.cache.FavouriteRecipesCacheImpl
-import com.boitshoko.spatula.domain.models.Recipe
+import com.boitshoko.spatula.db.models.RecipeStore
+import com.boitshoko.spatula.models.details.RecipeInstructionsResponse
 import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.repo.RecipesRepo
 import com.boitshoko.spatula.utils.Resource
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -131,9 +125,11 @@ class RecipesViewModel(
         recipesRepo.insertRecipe(recipe)
     }
 
-    fun getSavedRecipes() = recipesRepo.getSavedRecipes()
+//    fun getSavedRecipes() = recipesRepo.getSavedRecipes()
+    fun getSavedRecipes() = MutableLiveData<List<Result>>()
 
-    fun getRandomRecipe() = recipesRepo.getRandomRecipe()
+//    fun getRandomRecipe() = recipesRepo.getRandomRecipe()
+    fun getRandomRecipe() = MutableLiveData<RecipeStore>()
 
     fun deleteRecipe(recipe: Result) = viewModelScope.launch {
         recipesRepo.deleteRecipe(recipe)

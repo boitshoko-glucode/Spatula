@@ -58,8 +58,8 @@ class HomeFragment : Fragment() {
         viewModel.getRandomRecipe().observe(viewLifecycleOwner) { recipe ->
             Log.d(TAG, "setUpRandomRecipe: $recipe")
             viewModel.getRecipeInstructions(recipe.id)
-            setImage(recipe.image)
-            setTitle(recipe.title)
+            setImage(recipe.imageUrl)
+            setTitle(recipe.name)
 
         }
     }

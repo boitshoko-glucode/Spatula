@@ -17,12 +17,12 @@ class FavouriteRecipesCacheImpl(
 ): FavouriteRecipesCache {
     override val favourites: Flow<List<Recipe>> = dao.getAllFavourites().map { stores ->
         stores.map {
-            Recipe(name = it.name)
+            Recipe(it)
         }
     }
 
     override fun get(id: Int): Flow<Recipe?> = dao.getFavourite(id).map { store ->
-        store?.let { Recipe(it.name) }
+        store?.let { Recipe(it) }
     }
 
     override suspend fun insert(recipe: Recipe) {

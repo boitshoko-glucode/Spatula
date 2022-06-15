@@ -1,8 +1,8 @@
 package com.boitshoko.spatula
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -11,7 +11,9 @@ import com.boitshoko.spatula.db.RecipeDatabase
 import com.boitshoko.spatula.models.RecipesViewModel
 import com.boitshoko.spatula.models.RecipesViewModelProviderFactory
 import com.boitshoko.spatula.repo.RecipesRepo
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.boitshoko.spatula.models.search.Result
+import com.boitshoko.spatula.db.models.RecipeStore
 
 @Database(
-    entities = [Result::class],
+    entities = [RecipeStore::class],
     version = 1
 )
 @TypeConverters(Converters::class)

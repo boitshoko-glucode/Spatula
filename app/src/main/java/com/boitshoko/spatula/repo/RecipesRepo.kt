@@ -13,13 +13,13 @@ class RecipesRepo(
     suspend fun getRecipeInstructions(id: Int) =
         RetrofitInstance.api.getRecipeInstructions(id =  id)
 
-    suspend fun insertRecipe(recipe: Result) = db.getRecipeDao().insertFavourite(recipe)
+    suspend fun insertRecipe(recipe: Result) = {} // db.getRecipeDao().insertFavourite(recipe)
 
     fun getSavedRecipes() = db.getRecipeDao().getAllFavourites()
 
-    fun getRandomRecipe() = db.getRecipeDao().getRandomRecipe()
+    fun getRandomRecipe() = {}// db.getRecipeDao().getRandomRecipe()
 
-    suspend fun deleteRecipe(recipe: Result) = db.getRecipeDao().deleteRecipe(recipe)
+    suspend fun deleteRecipe(recipe: Result) = {} //= db.getRecipeDao().deleteRecipe(recipe)
 
 
 }
