@@ -17,6 +17,8 @@ class RecipesRepo(
 
     fun getSavedRecipes() = db.getRecipeDao().getAllFavourites()
 
+    fun getRandomRecipe() = db.getRecipeDao().getRandomRecipe()
+
     suspend fun deleteRecipe(recipe: Result) = db.getRecipeDao().deleteRecipe(recipe)
 
 
