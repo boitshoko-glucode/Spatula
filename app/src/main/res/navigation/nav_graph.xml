@@ -27,10 +27,25 @@
         <action
             android:id="@+id/action_actionSearch_to_recipeDetailsFragment"
             app:destination="@id/recipeDetailsFragment" />
+        <action
+            android:id="@+id/action_actionSearch_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <argument
+            android:name="recipeStr"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/recipeDetailsFragment"
         android:name="com.boitshoko.spatula.ui.RecipeDetailsFragment"
         android:label="fragment_recipe_details"
         tools:layout="@layout/fragment_recipe_details" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.boitshoko.spatula.ui.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_actionSearch"
+            app:destination="@id/actionSearch" />
+    </fragment>
 </navigation>

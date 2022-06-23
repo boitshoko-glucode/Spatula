@@ -192,7 +192,7 @@ class RecipeDetailsFragment : Fragment() {
         binding.progressBar.visibility = View.INVISIBLE
     }
 
-    fun expand(view: View, viewGroup: ViewGroup) {
+    private fun expand(view: View, viewGroup: ViewGroup) {
         viewGroup.layoutTransition.enableTransitionType(LayoutTransition.CHANGING)
         val v = if (view.visibility == View.GONE) View.VISIBLE else View.GONE
 

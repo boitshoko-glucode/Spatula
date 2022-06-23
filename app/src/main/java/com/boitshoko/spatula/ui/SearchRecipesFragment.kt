@@ -1,13 +1,15 @@
 package com.boitshoko.spatula.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -36,6 +38,17 @@ class SearchRecipesFragment : Fragment() {
     private lateinit var adapter: SearchAdapter
     private lateinit var rvSearchResults: RecyclerView
 
+    private var recipeStr: String? = null
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            recipeStr = it.getString("recipeStr").toString()
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,8 +58,6 @@ class SearchRecipesFragment : Fragment() {
 
         rvSearchResults = binding.rvSearchResults
 
-
-
         return binding.root
     }
 
@@ -55,6 +66,19 @@ class SearchRecipesFragment : Fragment() {
 
         viewModel = (activity as MainActivity).viewModel
 
+        setQueryText()
+        searchClickListener()
+        gotoCamera()
+        setUpObserver()
+    }
+
+    private fun gotoCamera() {
+        binding.filledTextField.setEndIconOnClickListener {
+            findNavController().navigate(R.id.action_actionSearch_to_cameraFragment)
+        }
+    }
+
+    private fun searchClickListener() {
         binding.etSearch.setOnEditorActionListener { _, actionId, _ ->
             return@setOnEditorActionListener when (actionId) {
                 EditorInfo.IME_ACTION_SEARCH -> {
@@ -65,9 +89,22 @@ class SearchRecipesFragment : Fragment() {
                 else -> false
             }
         }
-
-        setUpObserver()
     }
+
+    private fun setQueryText() {
+        if (recipeStr != null && recipeStr != "null") {
+            binding.etSearch.setText(recipeStr)
+            showKeyboard()
+        }
+    }
+
+    private fun showKeyboard() {
+        binding.etSearch.requestFocus()
+        val inputMethodManager =
+            context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(binding.etSearch, InputMethodManager.SHOW_IMPLICIT)
+    }
+
 
     private fun setUpObserver(){
         viewModel.searchRecipes.observe(viewLifecycleOwner) { response ->
@@ -128,7 +165,6 @@ class SearchRecipesFragment : Fragment() {
         adapter = SearchAdapter(recipes) {
             goToRecipe(it)
         }
-
         rvSearchResults.adapter = adapter
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)

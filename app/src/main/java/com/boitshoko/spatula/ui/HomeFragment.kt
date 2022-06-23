@@ -54,14 +54,18 @@ class HomeFragment : Fragment() {
 
 
     private fun getRandomRecipe() {
+        viewModel.getSavedRecipes().observe(viewLifecycleOwner) { recipes ->
+            if (recipes.isNotEmpty()){
+                viewModel.getRandomRecipe().observe(viewLifecycleOwner) { recipe ->
+                    Log.d(TAG, "setUpRandomRecipe: $recipe")
+                    viewModel.getRecipeInstructions(recipe.id)
+                    setImage(recipe.image)
+                    setTitle(recipe.title)
 
-        viewModel.getRandomRecipe().observe(viewLifecycleOwner) { recipe ->
-            Log.d(TAG, "setUpRandomRecipe: $recipe")
-            viewModel.getRecipeInstructions(recipe.id)
-            setImage(recipe.image)
-            setTitle(recipe.title)
-
+                }
+            }
         }
+
     }
 
     private fun setUpObserver() {
