@@ -26,7 +26,7 @@ class FavouriteRecipesCacheImpl(
     }
 
     override suspend fun insert(recipe: Recipe) {
-        val store = RecipeStore(1, "", "", true)
+        val store = RecipeStore(recipe.id, recipe.name, recipe.imageUrl, recipe.isFavourite)
         dao.insertFavourite(store)
     }
 }
