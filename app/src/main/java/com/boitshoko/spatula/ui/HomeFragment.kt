@@ -57,6 +57,7 @@ class HomeFragment : Fragment() {
     private fun getRandomRecipe() {
         viewModel.getSavedRecipes().observe(viewLifecycleOwner) { recipes ->
             if (recipes.isNotEmpty()){
+                hideViewsForEmptyList()
                 viewModel.getRandomRecipe().observe(viewLifecycleOwner) { recipe ->
                     Log.d(TAG, "setUpRandomRecipe: $recipe")
                     viewModel.getRecipeInstructions(recipe.id)
@@ -64,6 +65,8 @@ class HomeFragment : Fragment() {
                     setTitle(recipe.title)
 
                 }
+            }else{
+                showViewsForEmptyList()
             }
         }
 
@@ -172,6 +175,17 @@ class HomeFragment : Fragment() {
     private fun showViews() {
         binding.card.visibility = View.VISIBLE
         binding.recipeView.visibility = View.VISIBLE
+    }
+
+    private fun showViewsForEmptyList() {
+        hideProgressBar()
+        binding.noRecipesImage.visibility = View.VISIBLE
+        binding.noRecipesText.visibility = View.VISIBLE
+    }
+    private fun hideViewsForEmptyList() {
+        showProgressBar()
+        binding.noRecipesImage.visibility = View.GONE
+        binding.noRecipesText.visibility = View.GONE
     }
 
     private fun hideProgressBar() {
