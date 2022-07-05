@@ -57,7 +57,6 @@ object SpatulaModule {
     fun provideRecipeDatabase(app: Application) : RecipeDatabase {
         return Room.databaseBuilder(
             app, RecipeDatabase::class.java, "recipe_db.db"
-        )
-            .build()
+        ).build()
     }
 }
