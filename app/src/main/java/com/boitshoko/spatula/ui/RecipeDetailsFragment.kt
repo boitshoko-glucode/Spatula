@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.boitshoko.spatula.MainActivity
 import com.boitshoko.spatula.R
 import com.boitshoko.spatula.adapters.RecipeStepsAdapter
 import com.boitshoko.spatula.databinding.FragmentRecipeDetailsBinding
@@ -25,15 +25,17 @@ import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.utils.Resource
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class RecipeDetailsFragment : Fragment() {
 
     private val TAG = javaClass.simpleName
 
     private lateinit var binding: FragmentRecipeDetailsBinding
 
-    lateinit var viewModel: RecipesViewModel
+    private val viewModel: RecipesViewModel by viewModels()
 
 
     private lateinit var resultRecipe: Result
@@ -57,7 +59,6 @@ class RecipeDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).viewModel
 
         resultRecipe = arguments?.getSerializable("recipe") as Result
         stepList = mutableListOf()

@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
-import com.boitshoko.spatula.MainActivity
 import com.boitshoko.spatula.R
 import com.boitshoko.spatula.databinding.FragmentHomeBinding
 import com.boitshoko.spatula.models.RecipesViewModel
@@ -17,14 +17,16 @@ import com.boitshoko.spatula.models.details.Ingredient
 import com.boitshoko.spatula.models.details.RecipeInstructionsResponseItem
 import com.boitshoko.spatula.utils.Resource
 import com.bumptech.glide.Glide
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private val TAG = javaClass.simpleName
 
     private lateinit var binding: FragmentHomeBinding
 
-    lateinit var viewModel: RecipesViewModel
+    private val viewModel: RecipesViewModel by viewModels()
 
     private lateinit var stepList: MutableList<String>
     private lateinit var ingredientsList: MutableList<Ingredient>
@@ -42,7 +44,6 @@ class HomeFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        viewModel = (activity as MainActivity).viewModel
 
         stepList = mutableListOf()
         ingredientsList = mutableListOf()
@@ -56,6 +57,7 @@ class HomeFragment : Fragment() {
     private fun getRandomRecipe() {
         viewModel.getSavedRecipes().observe(viewLifecycleOwner) { recipes ->
             if (recipes.isNotEmpty()){
+                hideViewsForEmptyList()
                 viewModel.getRandomRecipe().observe(viewLifecycleOwner) { recipe ->
                     Log.d(TAG, "setUpRandomRecipe: $recipe")
                     viewModel.getRecipeInstructions(recipe.id)
@@ -63,6 +65,8 @@ class HomeFragment : Fragment() {
                     setTitle(recipe.title)
 
                 }
+            }else{
+                showViewsForEmptyList()
             }
         }
 
@@ -171,6 +175,17 @@ class HomeFragment : Fragment() {
     private fun showViews() {
         binding.card.visibility = View.VISIBLE
         binding.recipeView.visibility = View.VISIBLE
+    }
+
+    private fun showViewsForEmptyList() {
+        hideProgressBar()
+        binding.noRecipesImage.visibility = View.VISIBLE
+        binding.noRecipesText.visibility = View.VISIBLE
+    }
+    private fun hideViewsForEmptyList() {
+        showProgressBar()
+        binding.noRecipesImage.visibility = View.GONE
+        binding.noRecipesText.visibility = View.GONE
     }
 
     private fun hideProgressBar() {

@@ -2,32 +2,31 @@ package com.boitshoko.spatula.ui
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.boitshoko.spatula.MainActivity
 import com.boitshoko.spatula.R
 import com.boitshoko.spatula.adapters.FavoritesAdapter
-import com.boitshoko.spatula.adapters.SearchAdapter
 import com.boitshoko.spatula.databinding.FragmentFavoritesBinding
-import com.boitshoko.spatula.databinding.FragmentHomeBinding
 import com.boitshoko.spatula.models.RecipesViewModel
 import com.boitshoko.spatula.models.search.Result
-import kotlinx.android.synthetic.main.fragment_favorites.*
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class FavoritesFragment : Fragment() {
 
     private val TAG = javaClass.simpleName
 
     private lateinit var binding: FragmentFavoritesBinding
 
-    lateinit var viewModel: RecipesViewModel
+    private val viewModel: RecipesViewModel by viewModels()
 
     lateinit var adapter: FavoritesAdapter
 
@@ -48,7 +47,6 @@ class FavoritesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).viewModel
 
         setUpRecipesList()
     }

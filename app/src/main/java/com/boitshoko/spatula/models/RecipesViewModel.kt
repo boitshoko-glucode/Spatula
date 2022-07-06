@@ -15,11 +15,15 @@ import com.boitshoko.spatula.models.search.RecipesResponse
 import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.repo.RecipesRepo
 import com.boitshoko.spatula.utils.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
+import javax.inject.Inject
 
-class RecipesViewModel(
+
+@HiltViewModel
+class RecipesViewModel @Inject constructor (
     app: Application,
     private val recipesRepo: RecipesRepo)
     : AndroidViewModel(app) {

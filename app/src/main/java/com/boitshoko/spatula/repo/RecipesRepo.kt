@@ -1,25 +1,26 @@
 package com.boitshoko.spatula.repo
 
-import com.boitshoko.spatula.api.RetrofitInstance
-import com.boitshoko.spatula.db.RecipeDatabase
+import com.boitshoko.spatula.api.RecipesAPI
+import com.boitshoko.spatula.db.RecipeDao
 import com.boitshoko.spatula.models.search.Result
 
 class RecipesRepo(
-    private val db: RecipeDatabase
+    private val dao: RecipeDao,
+    private val api: RecipesAPI
 ) {
     suspend fun searchRecipes(searchQuery: String) =
-        RetrofitInstance.api.searchRecipes(searchQuery =  searchQuery)
+        api.searchRecipes(searchQuery =  searchQuery)
 
     suspend fun getRecipeInstructions(id: Int) =
-        RetrofitInstance.api.getRecipeInstructions(id =  id)
+        api.getRecipeInstructions(id =  id)
 
-    suspend fun insertRecipe(recipe: Result) = db.getRecipeDao().insertRecipe(recipe)
+    suspend fun insertRecipe(recipe: Result) = dao.insertRecipe(recipe)
 
-    fun getSavedRecipes() = db.getRecipeDao().getAllRecipes()
+    fun getSavedRecipes() = dao.getAllRecipes()
 
-    fun getRandomRecipe() = db.getRecipeDao().getRandomRecipe()
+    fun getRandomRecipe() = dao.getRandomRecipe()
 
-    suspend fun deleteRecipe(recipe: Result) = db.getRecipeDao().deleteRecipe(recipe)
+    suspend fun deleteRecipe(recipe: Result) = dao.deleteRecipe(recipe)
 
 
 }

@@ -10,28 +10,27 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
-import com.boitshoko.spatula.MainActivity
 import com.boitshoko.spatula.R
 import com.boitshoko.spatula.adapters.SearchAdapter
 import com.boitshoko.spatula.databinding.FragmentSearchRecipesBinding
 import com.boitshoko.spatula.models.RecipesViewModel
 import com.boitshoko.spatula.models.search.Result
 import com.boitshoko.spatula.utils.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchRecipesFragment : Fragment() {
 
     private val TAG = javaClass.simpleName
 
     private lateinit var binding: FragmentSearchRecipesBinding
 
-    // private val viewModel: RecipesViewModel by viewModels()
-
-    lateinit var viewModel: RecipesViewModel
+    private val viewModel: RecipesViewModel by viewModels()
 
     private  var recipesList: MutableList<Result>? = null
 
@@ -64,7 +63,6 @@ class SearchRecipesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = (activity as MainActivity).viewModel
 
         setQueryText()
         searchClickListener()
