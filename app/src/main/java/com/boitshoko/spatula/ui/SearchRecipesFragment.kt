@@ -111,9 +111,12 @@ class SearchRecipesFragment : Fragment() {
                     hideProgressBar()
                     showList()
                     response.data.let { recipesResponse ->
-                        if (recipesResponse != null) {
+                        if (recipesResponse != null && recipesResponse.results.isNotEmpty()) {
                             recipesList = recipesResponse.results.toList() as MutableList<Result>
                             setUpRecipesList(recipesList!!)
+                        }else {
+                            Toast.makeText(activity, "No results, try another recipe",
+                                Toast.LENGTH_SHORT).show()
                         }
 
                     }

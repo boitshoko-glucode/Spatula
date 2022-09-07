@@ -6,3 +6,4 @@ data class Equipment(
     val localizedName: String,
     val name: String
 )
+
